@@ -112,5 +112,3 @@ with tab3:
         except:
             st.warning(f"Run the notebook first to generate: {path}")
 
-st.markdown("---")
-st.markdown("Built  using **SVM + PCA + Streamlit** | [GitHub](#)")
