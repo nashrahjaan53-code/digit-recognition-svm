@@ -14,13 +14,11 @@ from sklearn.metrics import classification_report, confusion_matrix, ConfusionMa
 os.makedirs("../model", exist_ok=True)
 print("✅ All libraries imported!")
 
-# ── 2. LOAD ──────────────────────────────────────────────────
 digits = load_digits()
 X, y = digits.data, digits.target
 print(f"✅ Dataset: {X.shape[0]} samples | {X.shape[1]} features | Classes: {np.unique(y)}")
 
-# ── 3. EDA ───────────────────────────────────────────────────
-# Class distribution
+
 plt.figure(figsize=(10,4))
 sns.countplot(x=y, palette='tab10')
 plt.title('Class Distribution of Digits (0–9)', fontsize=14, fontweight='bold')
