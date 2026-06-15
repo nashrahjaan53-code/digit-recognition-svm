@@ -1,8 +1,3 @@
-# ============================================================
-# 🔢 Handwritten Digit Recognition using SVM
-# Dataset: sklearn Digits (8x8 pixel images, 10 classes)
-# ============================================================
-
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
