@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🔢 Handwritten Digit Recognition using SVM
 
 ![Python](https://img.shields.io/badge/Python-3.8+-blue)
@@ -140,3 +141,7 @@ streamlit run app.py
 Made by Nashrah K(https://github.com/nashrahjaan53-code)
 
 ⭐ Star this repo if you found it helpful!
+=======
+# digit-recognition-svm
+An end-to-end Machine Learning project that recognizes handwritten digits (0–9) using a Support Vector Machine (SVM). Built with a full ML pipeline including EDA, PCA, hyperparameter tuning, and an interactive Streamlit web app.
+>>>>>>> 027a48d713ed34a10a93828fd26d440caf67d3fa
