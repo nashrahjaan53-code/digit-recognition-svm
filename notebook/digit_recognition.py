@@ -27,7 +27,6 @@ plt.tight_layout()
 plt.savefig('../model/class_distribution.png', dpi=150)
 plt.close()
 
-# Sample images
 fig, axes = plt.subplots(2, 10, figsize=(15, 4))
 fig.suptitle('Sample Images — One per Digit (0–9)', fontsize=14, fontweight='bold')
 for digit in range(10):
@@ -41,7 +40,6 @@ plt.savefig('../model/sample_images.png', dpi=150)
 plt.close()
 print("✅ EDA plots saved.")
 
-# ── 4. PREPROCESSING ─────────────────────────────────────────
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42, stratify=y
 )
@@ -56,7 +54,6 @@ X_train_pca = pca.fit_transform(X_train_sc)
 X_test_pca  = pca.transform(X_test_sc)
 print(f"✅ PCA: kept {pca.n_components_} components (95% variance)")
 
-# PCA Variance plot
 plt.figure(figsize=(9,4))
 cumvar = np.cumsum(pca.explained_variance_ratio_)*100
 plt.plot(cumvar, color='steelblue', linewidth=2)
@@ -67,8 +64,8 @@ plt.legend(); plt.tight_layout()
 plt.savefig('../model/pca_variance.png', dpi=150)
 plt.close()
 
-# ── 5. TRAINING + HYPERPARAMETER TUNING ──────────────────────
-print("\n🤖 Running GridSearchCV (this may take ~1–2 min)...")
+
+print("\n Running GridSearchCV (this may take ~1–2 min)...")
 param_grid = {'C': [0.1, 1, 10, 100], 'gamma': ['scale', 'auto'], 'kernel': ['rbf']}
 grid = GridSearchCV(SVC(probability=True, random_state=42), param_grid,
                     cv=5, scoring='accuracy', verbose=1, n_jobs=-1)
@@ -77,14 +74,13 @@ best = grid.best_estimator_
 print(f"\n✅ Best Params  : {grid.best_params_}")
 print(f"✅ Best CV Acc  : {grid.best_score_*100:.2f}%")
 
-# ── 6. EVALUATION ────────────────────────────────────────────
+
 y_pred = best.predict(X_test_pca)
 acc = (y_pred == y_test).mean()
 print(f"\n📊 Test Accuracy: {acc*100:.2f}%")
 print("\n📋 Classification Report:\n")
 print(classification_report(y_test, y_pred))
 
-# Confusion Matrix
 cm = confusion_matrix(y_test, y_pred)
 fig, ax = plt.subplots(figsize=(9,7))
 ConfusionMatrixDisplay(cm, display_labels=range(10)).plot(ax=ax, cmap='Blues', colorbar=True)
@@ -93,7 +89,6 @@ plt.tight_layout()
 plt.savefig('../model/confusion_matrix.png', dpi=150)
 plt.close()
 
-# Misclassified examples
 wrong = np.where(y_pred != y_test)[0]
 fig, axes = plt.subplots(2, 5, figsize=(12,5))
 fig.suptitle('❌ Misclassified Examples', fontsize=13, fontweight='bold')
@@ -109,7 +104,7 @@ plt.savefig('../model/misclassified.png', dpi=150)
 plt.close()
 print("✅ All evaluation plots saved.")
 
-# GridSearch heatmap
+
 results = pd.DataFrame(grid.cv_results_)
 pivot = results.pivot_table(values='mean_test_score',
                              index='param_C', columns='param_gamma')
@@ -121,9 +116,8 @@ plt.savefig('../model/gridsearch_heatmap.png', dpi=150)
 plt.close()
 print("✅ GridSearch heatmap saved.")
 
-# ── 7. SAVE ──────────────────────────────────────────────────
 joblib.dump(best,   '../model/svm_model.pkl')
 joblib.dump(scaler, '../model/scaler.pkl')
 joblib.dump(pca,    '../model/pca.pkl')
-print("\n💾 Model saved!")
-print(f"\n🎉 DONE! Test Accuracy: {acc*100:.2f}% | Best: {grid.best_params_}")
+print("\n Model saved!")
+print(f"\n DONE! Test Accuracy: {acc*100:.2f}% | Best: {grid.best_params_}")
